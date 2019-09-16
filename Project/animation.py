@@ -3,10 +3,12 @@ import math
 
 #make the pause or start menu
 
-#animation starts out pause
+#animation starts out pause and declare global variables
 running=False
 stop=False
 ball=None
+#the trail component
+trail=None
 
 #contols pausing
 def run():
@@ -60,6 +62,7 @@ def bounce(ball,v):
 #simulate projectile motion without air resistance basic one
 def simpleProjectile(ball,v):
 	global running
+	global trail
 	#say the angle is 30 degrees
 	vx=v*math.cos(math.radians(30))
 	vy=v*math.cos(math.radians(30))
@@ -81,13 +84,19 @@ def simpleProjectile(ball,v):
 		
 		elif stop:
 			break
-					
+	trail.clear()
+	print(ball.pos)
+	print(t)
 #set the title
 scene.title="Projectiles\n"
 	
-#make the scene dimensions and properties
-scene.width=1000
+#make the scene dimensions and properties of the cameraa
+scene.width=1200
 scene.height=800
+scene.autoscale=False
+scene.camera.pos=vector(0,3,-10)
+scene.camera.rotate(-math.pi/2.4,vector(0,1.3,0),vector(0,0,0))
+scene.background=color.white
 
 #make the pause button to control animation
 
@@ -95,7 +104,7 @@ button(text="Pause",pos=scene.title_anchor,bind=run)
 
 #create ground and ball
 ball=sphere(pos=vector(0,0.1, 0), radius=0.1, color=color.white)
-floor=box(pos=vector(0,0,0), size=vector(1,0.05,1),
+floor=box(pos=vector(5,0,0), size=vector(160,0.05,5),
 color=color.green)
 
 
@@ -103,18 +112,21 @@ color=color.green)
 
 scene.caption="\nVary the launch speed\n\n"
 
-vsl=slider(min=0.3,max=3,value=1.5,length=220,bind=launchSpeed,right=15)
+vsl=slider(min=10.0,max=60,value=15,length=220,bind=launchSpeed,right=15)
 wt=wtext(text='{:1.2f}'.format(vsl.value))
 
 scene.append_to_caption(" metres/s \n")
 
 
-#main loop animation
-b=attach_trail(ball)
 
+trail=attach_trail(ball)
+trail.trail_radius=0.1
+trail.color=color.red
+
+
+#main animation loop
 while True:
-	simpleProjectile(ball,1*vsl.value)
-	print(scene.camera.pos)
-	#b.clear()
+	simpleProjectile(ball,vsl.value/2.7)
+	
 
 
