@@ -135,11 +135,14 @@ scene.title="Projectiles\n"
 	
 #make the scene dimensions and properties of the cameraa
 scene.width=1200
-scene.height=800
+scene.height=600
 scene.autoscale=False
-scene.camera.pos=vector(0,3,50)
-scene.camera.rotate(-math.pi/2.02,vector(0,1.3,0),vector(0,0,0))
-scene.background=color.white
+scene.camera.pos=vector(0,7,58)
+scene.camera.rotate(-math.pi/2.1,vector(0,1.3,0),vector(0,0,0))
+scene.background=color.black
+
+#lighting conditions
+distant_light(direction=vector(60,-4,0), color=color.gray(0.5))
 
 
 #make the pause button to control animation
@@ -147,31 +150,30 @@ scene.background=color.white
 button(text="Pause",pos=scene.title_anchor,bind=run) 
 
 #create ground and ball
-ball=sphere(pos=vector(-60,0.1,0 ), radius=0.1, color=color.white)
-floor=box(pos=vector(5,0,0), size=vector(160,0.05,5),
-color=color.green)
-
+ball=sphere(pos=vector(-60,0.1,0 ), radius=0.1, color=color.white,emissive=True)
+floor=box(pos=vector(30,0,0), size=vector(198,0.05,20),
+color=color.green,emissive=False)
 
 #create initial velocity and angular launch angle slider
-
 scene.caption="\nVary the launch speed\n\n"
 
-vsl=slider(min=10.0,max=60,value=15,length=220,bind=launchSpeed,right=15)
+vsl=slider(min=50.0,max=70,value=60,length=220,bind=launchSpeed,right=15)
 wt=wtext(text='{:1.2f}'.format(vsl.value))
 
+#velocity slider text
 scene.append_to_caption(" metres/s \n")
 
-
 #set the trail that follows
-trail=attach_trail(ball)
+trail=attach_trail(ball,emissive=True)
 trail.interval=20
-trail.color=color.cyan
+trail.color=color.red
+
+
 
 #main animation loop
 while True:
-	
 	if running:
-		simpleNumericalProjectile(ball,vsl.value/1.4)	
+		simpleProjectile(ball,vsl.value/5)	
 		reset(ball)	
 		trail.clear()
 
