@@ -1,3 +1,0 @@
-from visual import *
-
-sphere()

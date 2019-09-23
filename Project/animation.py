@@ -150,7 +150,7 @@ distant_light(direction=vector(60,-4,0), color=color.gray(0.5))
 button(text="Pause",pos=scene.title_anchor,bind=run) 
 
 #create ground and ball
-ball=sphere(pos=vector(-60,0.1,0 ), radius=0.1, color=color.white,emissive=True)
+ball=sphere(pos=vector(-60,0.1,0 ), radius=0.2, color=color.white,emissive=True)
 floor=box(pos=vector(30,0,0), size=vector(198,0.05,20),
 color=color.green,emissive=False)
 
