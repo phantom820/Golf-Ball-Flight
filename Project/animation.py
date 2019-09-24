@@ -1,6 +1,7 @@
 from vpython import *
 import math
 import random
+import numerics
 
 #numerical methods
 
@@ -43,7 +44,7 @@ def reset(ball):
 	global stop
 	running=False
 	stop=True
-	ball.pos=vector(-60,0.1,0)
+	ball.pos=vector(-70,0.2,0)
 	
 #setting the launch speed resets things to default
 def launchSpeed(s):
@@ -80,8 +81,8 @@ def simpleProjectile(ball,v):
 	global running
 	global trail
 	#say the angle is 30 degrees
-	vx=v*math.cos(math.radians(30))
-	vy=v*math.cos(math.radians(30))
+	vx=v*math.cos(math.radians(45))
+	vy=v*math.sin(math.radians(45))
 	ball.mass=0.25
 
 	g=vector(0,-9.8,0)
@@ -103,26 +104,31 @@ def simpleProjectile(ball,v):
 
 	print(ball.pos)
 	
+	
 def simpleNumericalProjectile(ball,v):
 	global running
 	global trail
-	#say the angle is 30 degrees
-	vx=v*math.cos(math.radians(30))
-	vy=v*math.cos(math.radians(30))
+	#say the angle is 45 degrees
+	v0x=v*math.cos(math.radians(45))
+	v0y=v*math.sin(math.radians(45))
 	ball.mass=0.25
 	
-	#use euler method for y position
-	data=euler(0.1,vy,0.001)
-	y=data[0]
-	yprime=data[1]
-	i=0
+	#use euler method for x,x',y and y'
+	matrix=numerics.euler(0.2,v0y,-70,v0x,0.01)
+	x=matrix[0]
+	xprime=matrix[1]
+	y=matrix[2]
+	#print(y)
+	yprime=matrix[3]
+	
+	print(y[1],x[1])
 	t=0
-	dt=0.001
-	while ball.pos.y>=0.1:
+	dt=0.01
+	for i in range(len(y)):
 		if(running):
-			rate(350)
-			ball.v=vector(vx,yprime[i],0)
-			ball.pos=vector(vx*dt+ball.pos.x,y[i],0)
+			rate(50)
+			ball.v=vector(xprime[i],yprime[i],0)
+			ball.pos=vector(x[i],y[i],0)
 			i=i+1
 			t=t+dt
 			
@@ -137,7 +143,7 @@ scene.title="Projectiles\n"
 scene.width=1200
 scene.height=600
 scene.autoscale=False
-scene.camera.pos=vector(0,7,58)
+scene.camera.pos=vector(5,7,68)
 scene.camera.rotate(-math.pi/2.1,vector(0,1.3,0),vector(0,0,0))
 scene.background=color.black
 
@@ -150,8 +156,8 @@ distant_light(direction=vector(60,-4,0), color=color.gray(0.5))
 button(text="Pause",pos=scene.title_anchor,bind=run) 
 
 #create ground and ball
-ball=sphere(pos=vector(-60,0.1,0 ), radius=0.2, color=color.white,emissive=True)
-floor=box(pos=vector(30,0,0), size=vector(198,0.05,20),
+ball=sphere(pos=vector(-70,0.2,0 ), radius=0.2, color=color.white,emissive=False)
+floor=box(pos=vector(30,0,0), size=vector(205,0.05,20),
 color=color.green,emissive=False)
 
 #create initial velocity and angular launch angle slider
@@ -173,7 +179,7 @@ trail.color=color.red
 #main animation loop
 while True:
 	if running:
-		simpleProjectile(ball,vsl.value/5)	
+		simpleNumericalProjectile(ball,vsl.value)	
 		reset(ball)	
 		trail.clear()
 
