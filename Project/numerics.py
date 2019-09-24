@@ -33,13 +33,13 @@ def euler(launchData):
 		t.append(t[i]+dt)
 	
 		i=i+1
-	print("Without magnus")
+	'''print("Without magnus")
 	print("max height ",max(y))
 	print("distance ",max(x))
 	plt.plot(x,y)
 	#plt.plot(t,x)
 	#plt.plot(t,y)
-	#plt.show()
+	#plt.show()'''
 	#returns a matrix that has first row as x ,second row x'.third y , fourth y'
 	matrix=[x,xprime,y,yprime]
 
@@ -92,17 +92,18 @@ def eulerMagnus(launchData):
 		t.append(t[i]+dt)
 		i=i+1
 
-	print("With magnus")
+	'''print("With magnus")
 	print("max height ",max(y))
 	print("distance ",max(x))
 	
 	plt.plot(z,x)
 	#plt.plot(t,x)
 	#plt.plot(t,y)
-	#plt.show()
+	#plt.show()'''
 	matrix=[x,xprime,y,yprime,z,zprime]
 
 	return matrix
+	
 #f1 = gcurve(color=color.cyan)	# a graphics curve
 #v0=70;
 #v0x=v0*math.cos(math.radians(30))
