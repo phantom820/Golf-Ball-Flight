@@ -1,3 +1,3 @@
 # Physics
-##Simulation of the flight of a golf ball 
+## Simulation of the flight of a golf ball 
 
